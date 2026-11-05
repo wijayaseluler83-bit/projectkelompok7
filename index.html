@@ -1,0 +1,384 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SayoLearn – Student Learning Platform</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.png" type="image/png">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+
+  <div class="brand">
+    Sayo<span>Learn</span>
+  </div>
+
+  <nav id="nav">
+    <button data-page="dashboard" class="active">
+      <i data-lucide="layout-dashboard"></i>
+      <b>Dashboard</b>
+    </button>
+
+    <button data-page="schedule">
+      <i data-lucide="calendar-days"></i>
+      <b>My Schedule</b>
+    </button>
+
+    <button data-page="tasks">
+      <i data-lucide="clipboard-check"></i>
+      <b>My Tasks</b>
+    </button>
+
+    <button data-page="quiz">
+      <i data-lucide="brain"></i>
+      <b>QuizTime</b>
+    </button>
+
+    <button data-page="results">
+      <i data-lucide="trophy"></i>
+      <b>Quiz Results</b>
+    </button>
+
+    <button data-page="about">
+      <i data-lucide="info"></i>
+      <b>About</b>
+    </button>
+  </nav>
+</aside>
+
+<main class="main">
+
+  <!-- ===== DASHBOARD ===== -->
+  <section id="page-dashboard" class="page active">
+
+    <header class="hero">
+      <div>
+        <h1 id="greet">Halo!</h1>
+        <p id="today"></p>
+      </div>
+
+      <button class="btn light" id="btn-name">Ubah nama</button>
+    </header>
+
+    <div class="grid stats" id="stats"></div>
+
+    <div class="grid two">
+      <div class="card">
+        <h2>Jadwal hari ini</h2>
+        <div id="d-schedule"></div>
+      </div>
+
+      <div class="card">
+        <h2>Tugas terdekat</h2>
+        <div id="d-tasks"></div>
+      </div>
+    </div>
+
+    <div class="grid two">
+      <div class="card">
+        <h2>Aktivitas belajar</h2>
+        <div id="d-activity"></div>
+      </div>
+
+      <div class="card cta">
+        <h2>Siap berlatih?</h2>
+        <p>Kerjakan kuis singkat dan lihat pembahasannya.</p>
+        <button class="btn light" data-go="quiz">
+          Mulai QuizTime
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== MY SCHEDULE ===== -->
+  <section id="page-schedule" class="page">
+
+    <div class="bar">
+      <h1>My Schedule</h1>
+      <button class="btn" id="btn-add-sch">
+        + Tambah jadwal
+      </button>
+    </div>
+
+    <div class="grid days" id="sch-list"></div>
+
+  </section>
+
+  <!-- ===== MY TASKS ===== -->
+  <section id="page-tasks" class="page">
+
+    <div class="bar">
+      <h1>My Tasks</h1>
+      <button class="btn" id="btn-add-task">
+        + Tambah tugas
+      </button>
+    </div>
+
+    <div class="filters" id="task-filter">
+      <button data-f="Semua" class="active">Semua</button>
+      <button data-f="Belum Dikerjakan">Belum Dikerjakan</button>
+      <button data-f="Sedang Dikerjakan">Sedang Dikerjakan</button>
+      <button data-f="Selesai">Selesai</button>
+    </div>
+
+    <div id="task-list"></div>
+
+  </section>
+
+  <!-- ===== QUIZTIME ===== -->
+  <section id="page-quiz" class="page">
+
+    <h1>QuizTime</h1>
+
+    <!-- Pilih mata pelajaran -->
+    <div id="quiz-setup" class="card narrow">
+
+      <label>
+        Mata pelajaran
+        <select id="q-subject"></select>
+      </label>
+
+      <label>
+        Kategori soal
+        <select id="q-cat">
+          <option>Semua</option>
+          <option>Dasar</option>
+          <option>Menengah</option>
+        </select>
+      </label>
+
+      <button class="btn" id="btn-start">
+        Mulai kuis
+      </button>
+
+    </div>
+
+    <!-- Mengerjakan soal -->
+    <div id="quiz-run" class="card narrow" hidden>
+
+      <div class="qhead">
+        <span id="q-count"></span>
+
+        <span class="timer">
+          ⏱ <span id="q-time">00:00</span>
+        </span>
+      </div>
+
+      <h2 id="q-text"></h2>
+
+      <div id="q-options"></div>
+
+      <div class="qnav">
+        <button class="btn ghost" id="q-prev">
+          Sebelumnya
+        </button>
+
+        <button class="btn" id="q-next">
+          Berikutnya
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Hasil kuis -->
+    <div id="quiz-done" hidden>
+
+      <div class="card narrow center" id="q-summary"></div>
+
+      <div id="q-review"></div>
+
+      <button class="btn" id="btn-again">
+        Kuis lagi
+      </button>
+
+    </div>
+
+  </section>
+
+  <!-- ===== QUIZ RESULTS ===== -->
+  <section id="page-results" class="page">
+
+    <div class="bar">
+      <h1>Quiz Results</h1>
+
+      <button class="btn danger" id="btn-clear">
+        Hapus riwayat
+      </button>
+    </div>
+
+    <div id="res-list"></div>
+
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="page-about" class="page">
+
+    <h1>About SayoLearn</h1>
+
+    <div class="card">
+
+      <p>
+        SayoLearn adalah platform pembelajaran
+        sederhana yang membantu siswa dan siswi
+        dalam mengatur jadwal pelajaran, mencatat tugas sekolah,
+        dan berlatih soal lewat kuis interaktif.
+      </p>
+
+      <h2>Tujuan</h2>
+
+      <p>
+        Website ini dibuat sebagai tugas kelompok 7
+        (HTML, CSS, JavaScript, LocalStorage) sekaligus alat bantu
+        belajar yang benar-benar bisa dipakai.
+      </p>
+
+      <h2>Manfaat untuk siswa</h2>
+
+      <ul>
+        <li>Jadwal mingguan tertata, tidak lupa mata pelajaran.</li>
+        <li>Tugas tercatat lengkap dengan deadline dan status.</li>
+        <li>Latihan soal dengan nilai otomatis dan pembahasan.</li>
+        <li>Riwayat nilai tersimpan untuk memantau perkembangan.</li>
+      </ul>
+
+      <p class="muted">
+        Data tersimpan di browser perangkat ini (LocalStorage).
+      </p>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== DIALOG JADWAL ===== -->
+<dialog id="dlg-sch">
+
+  <form id="f-sch" novalidate>
+
+    <h2 id="sch-title">Tambah jadwal</h2>
+
+    <input type="hidden" id="sf-id">
+
+    <label>
+      Hari
+      <select id="sf-day"></select>
+    </label>
+
+    <label>
+      Mata pelajaran
+      <input id="sf-subject" maxlength="40">
+    </label>
+
+    <div class="row">
+
+      <label>
+        Mulai
+        <input type="time" id="sf-start">
+      </label>
+
+      <label>
+        Selesai
+        <input type="time" id="sf-end">
+      </label>
+
+    </div>
+
+    <label>
+      Nama guru
+      <input id="sf-teacher" maxlength="40">
+    </label>
+
+    <p class="err" id="sf-err"></p>
+
+    <div class="row end">
+
+      <button type="button" class="btn ghost" data-close>
+        Batal
+      </button>
+
+      <button class="btn">
+        Simpan jadwal
+      </button>
+
+    </div>
+
+  </form>
+</dialog>
+
+<!-- ===== DIALOG TUGAS ===== -->
+<dialog id="dlg-task">
+
+  <form id="f-task" novalidate>
+
+    <h2 id="task-title">Tambah tugas</h2>
+
+    <input type="hidden" id="tf-id">
+
+    <label>
+      Nama tugas
+      <input id="tf-name" maxlength="60">
+    </label>
+
+    <label>
+      Mata pelajaran
+      <input id="tf-subject" maxlength="40">
+    </label>
+
+    <label>
+      Deadline
+      <input type="date" id="tf-deadline">
+    </label>
+
+    <label>
+      Status
+      <select id="tf-status"></select>
+    </label>
+
+    <label>
+      Deskripsi
+      <textarea id="tf-desc" rows="3" maxlength="200"></textarea>
+    </label>
+
+    <p class="err" id="tf-err"></p>
+
+    <div class="row end">
+
+      <button type="button" class="btn ghost" data-close>
+        Batal
+      </button>
+
+      <button class="btn">
+        Simpan tugas
+      </button>
+
+    </div>
+
+  </form>
+</dialog>
+
+<!-- ===== TOAST NOTIFICATION ===== -->
+<div id="toast" role="status"></div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script src="script.js" defer></script>
+
+</body>
+</html>
